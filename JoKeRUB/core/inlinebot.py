@@ -53,7 +53,7 @@ def ibuild_keyboard(buttons):
 
 
 def main_menu():
-    text = f"**- [سـورس robin ](https://t.me/RobinUserBot)\
+    text = f"**- [سـورس 𝙃𝙀𝙇𝙇𝘼𝙎 ](https://t.me/RobinUserBot)\
         \n المسـاعد\
         \n\
         \n◽ robin  لـ {mention}**"
@@ -336,7 +336,7 @@ async def inline_handler(event):  # sourcery no-metrics
 
             buttons = [Button.inline("عـرض الـرسـالة 🔐", data=f"troll_{timestamp}")]
             result = builder.article(
-                title="رسـالة تـرول من سـورس robin 🧸♥",
+                title="رسـالة تـرول من سـورس 𝙃𝙀𝙇𝙇𝘼𝙎 🧸♥",
                 text=f"فقـط {razan} هـو مـن يستـطيع مشـاهدتهـا !",
                 buttons=buttons,
             )
@@ -386,7 +386,7 @@ async def inline_handler(event):  # sourcery no-metrics
 
             buttons = [Button.inline("عـرض الـرسـالة 🔐", data=f"rzan_{timestamp}")]
             result = builder.article(
-                title="همسـة سـرية من سـورس robin 🧸♥",
+                title="همسـة سـرية من سـورس 𝙃𝙀𝙇𝙇𝘼𝙎 🧸♥",
                 text=f"فقـط {razan} هـو مـن يستـطيع مشـاهدتهـا !",
                 buttons=buttons,
             )
@@ -409,7 +409,7 @@ async def inline_handler(event):  # sourcery no-metrics
 
             buttons = [Button.inline("قراءة الـرسالـة ", data=f"hide_{timestamp}")]
             result = builder.article(
-                title="رسـالة مخفيـة من سـورس robin 🧸♥",
+                title="رسـالة مخفيـة من سـورس 𝙃𝙀𝙇𝙇𝘼𝙎 🧸♥",
                 text=f"✖✖✖",
                 buttons=buttons,
             )
