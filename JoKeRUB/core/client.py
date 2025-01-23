@@ -1,317 +1,246 @@
-import datetime
-import inspect
-import re
-import sys
-import traceback
-from pathlib import Path
-from typing import Dict, List, Union
-from ..sql_helper.globals import gvarstatus
-from telethon import TelegramClient, events
-from telethon.errors import MessageIdInvalidError, MessageNotModifiedError
+# WRITE  BY JoKeRUB
+# PLUGIN FOR JoKeRUB 
+# @k_jj_j
 
+from telethon import events
+import random, re
 from ..Config import Config
-from ..helpers.utils.events import checking
-from ..helpers.utils.format import paste_message
-from ..helpers.utils.utils import runcmd
+
+from JoKeRUB.utils import admin_cmd
+
+import asyncio
+from JoKeRUB import l313l
+from random import choice
+
+from ..core.managers import edit_or_reply
 from ..sql_helper.globals import gvarstatus
-from . import BOT_INFO, CMD_INFO, GRP_INFO, LOADED_CMDS, PLG_INFO
-from .cmdinfo import _format_about
-from .data import _sudousers_list, blacklist_chats_list, sudo_enabled_cmds
-from .events import *
-from .fasttelethon import download_file, upload_file
-from .logger import logging
-from .managers import edit_delete
-from .pluginManager import get_message_link, restart_script
 
-LOGS = logging.getLogger(__name__)
+plugin_category = "extra"
 
-DEVJOKR = [1374312239, 5564802580]
-class REGEX:
-    def __init__(self):
-        self.regex = ""
-        self.regex1 = ""
-        self.regex2 = ""
+rehu = [
+    "قال المهدي(عجل الله فرجه):الدّينُ لمحمّد صلى الله عليه وآله وسلم والهدايةُ لعَلِيٍّ أمير المؤمنين ع، لأنها لهُ وفي عَقِبِه باقيةً إلى يومِ القيامة",
+    "قال المهدي(عجل الله فرجه):إذا استغفرت الله (عز وجل) فالله يغفر لك",
+    "قال المهدي(عجل الله فرجه):لا يحلّ لأحد أن يتصرّف في مال غيره بغير إذنه",
+    "قال المهدي(عجل الله فرجه):إن اُستَرشدت أُرشِدتَ، وإن طَلبت وجدت",
+    "قَالَ الإمام علي (عليه السلام): يَا ابْنَ آدَمَ إِذَا رَأَيْتَ رَبَّكَ سُبْحَانَهُ يُتَابِعُ عَلَيْكَ نِعَمَهُ وَأَنْتَ تَعْصِيهِ فَاحْذَرْهُ",
+    "قَالَ الإمام علي (عليه السلام): الصَّبْرُ صَبْرَانِ صَبْرٌ عَلَى مَا تَكْرَهُ وَصَبْرٌ عَمَّا تُحِبُّ",
+    "قَالَ الإمام علي (عليه السلام): لَا يَكُونُ الصَّدِيقُ صَدِيقاً حَتَّى يَحْفَظَ أَخَاهُ فِي ثَلَاثٍ فِي نَكْبَتِهِ وَغَيْبَتِهِ وَوَفَاتِهِ",
+    "قال الإمام الصادق(عليه السلام): اكتبوا فإنكم لا تحفظون حتى تكتبو",
+    "قال الإمام الصادق(عليه السلام): ركعة يصليها الفقيه أفضل من سبعين ألف ركعة يصليها العابد",
+    "قال الإمام الصادق(عليه السلام): طلب العلم فريضة من فرائض الله",
+    "عن رسول الله (صلى الله عليه وآله): الْبَخِيلُ‏ حَقّاً مَنْ ذُكِرْتُ عِنْدَهُ فَلَمْ يُصَلِّ عَلَيَّ",
+    "عن رسول الله (صلى الله عليه وآله): مَنْ أَتَانِي زَائِراً كُنْتُ شَفِيعَهُ‏ يَوْمَ‏ الْقِيَامَة",
+    "عن رسول الله (صلى الله عليه وآله): بُغْضُ‏ عَلِيٍ‏ كُفْرٌ وَ بُغْضُ بَنِي هَاشِمٍ نِفَاقٌ",
+    "عن الامام علي (عليه السلام) قال : أعظم الذنوب ما استخف به صاحبه",
+    "عن الامام علي (عليه السلام) قال : إذا قويت فاقو على طاعة الله، وإذا ضعفت فاضعف في معصيته",
+    "عن الامام علي (عليه السلام) قال : أعداؤك ثلاثة: عدوك، وصديق عدوك، وعدو صديقك",
+    "عن الامام علي (عليه السلام) قال : لا غنى كالعقل، ولا فقر كالجهل، ولا ميراث كالأدب",
+    "عن الامام علي (عليه السلام) قال : لسانك حصانك، إن صنته صانك",
+]
+@l313l.ar_cmd(pattern="الاوامر(?:\s|$)([\s\S]*)")
+async def _(event):
+     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+        F_O_1 = random.choice(rehu)
+        await event.edit(
+        f": **⦑ قائمة اوامر 7rB  ⦒**\n★•┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n( `.م1` )  ⦙ **اوامر الادمن**\n( `.م2` )  ⦙ **اوامر المجموعة**\n( `.م3` )  ⦙ **اوامر الترحيب والردود**\n( `.م4` )  ⦙ **حماية خاص والتلكراف**\n( `.م5` )  ⦙ **اوامر المنشن والانتحال**\n( `.م6` )  ⦙ **اوامر التحميل والترجمة**\n( `.م7` )  ⦙ **اوامر المنع و القفل**\n( `.م8` )  ⦙ **اوامر التنظيف والتكرار**\n( `.م9` )  ⦙ **اوامر التخصيص والفارات**\n( `.م10` ) ⦙ **اوامر الوقتي و التشغيل**\n( `.م11` ) ⦙ **اوامر الكشف و الروابط**\n( `.م12` ) ⦙ **اوامر المساعدة والإذاعة** \n( `.م13` ) ⦙ **اوامر الارسال والاذكار**\n( `.م14` ) ⦙ **اوامر المـلصقات وكوكل**\n( `.م15` ) ⦙ **اوامر التسلية والميمز والتحشيش** \n( `.م16` ) ⦙ **اوامر الصيغ والجهات**\n( `.م17` ) ⦙ **اوامر التمبلر والزغرفة والمتحركة**\n( `.م18` ) ⦙ **اوامر الحساب والترفيه**\n( `.م19` ) ⦙ **اوامر الميوزك والتشغيل**\n( `.م20` ) ⦙ **اوامر بصمات الميمز**\n( `.م21` ) ⦙ **اوامر تجميع النقاط وبوت وعد**\n★•┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n **᯽︙ {F_O_1} **"
+)
+
+@l313l.ar_cmd(
+    pattern="م1$",
+    command=("م1", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الادمن لسورس 7rB  **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الحظر` )\n- ( `.اوامر الكتم` )\n- ( `.اوامر التثبيت` )\n- ( `.اوامر الاشراف` )\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+		
+@l313l.ar_cmd(
+    pattern="م2$",
+    command=("م2", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر المجـموعه لسورس 7rB  **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر التفليش` )\n- ( `.اوامر المحذوفين` )\n- ( `.اوامر الكروب` )\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م3$",
+    command=("م3", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الـترحيب والـردود **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الترحيب` )\n- ( `.اوامر الردود` )\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+@l313l.ar_cmd(
+    pattern="م4$",
+    command=("م4", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر حـماية الخاص والتلكراف **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الحماية` )\n- ( `.اوامر التلكراف` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+@l313l.ar_cmd(
+    pattern="م5$",
+    command=("م5", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الـمنشن والانتحال **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الانتحال` )\n- ( `.اوامر التقليد` )\n- ( `.اوامر المنشن` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م6$",
+    command=("م6", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر التحميل والترجمه **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر النطق` )\n- ( `.اوامر التحميل` )\n- ( `.اوامر الترجمة` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م7$",
+    command=("م7", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر القفل والمنع **:\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر القفل` )\n- ( `.اوامر الفتح` )\n- ( `.اوامر المنع` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م8$",
+    command=("م8", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر التكرار والتنظيف **:\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر التكرار` )\n- ( `.اوامر السبام` )\n- ( `.اوامر التنظيف` ) \n- ( `.اوامر المسح` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م9$",
+    command=("م9", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة التخصيص والفارات **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر التخصيص` )\n لتغير الصور والكلايش كل من الحماية والفحص والبنك\n- ( `.اوامر الفارات` )\n - لتغير الاسم وزخرفة الوقت والصورة الوقتية والمنطقة الزمنية ورمز الاسم والبايو الوقتي وغيرها\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+		)
+
+@l313l.ar_cmd(
+    pattern="م10$",
+    command=("م10", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الوقتي والتشغيل **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الاسم` )\n- ( `.اوامر البايو` )\n- ( `.اوامر الكروب الوقتي` )\n- ( `.اوامر التشغيل` ) \n- ( `.اوامر الاطفاء` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)	
+
+@l313l.ar_cmd(
+    pattern="م11$",
+    command=("م11", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الكـشف و الروابط **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الكشف` )\n- ( `.اوامر الروابط` ) \n\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+@l313l.ar_cmd(
+    pattern="م12$",
+    command=("م12", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر المساعدة  **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الوقت والتاريخ` )\n- ( `.اوامر كورونا` )\n- ( `.اوامر الصلاة` ) \n- ( `.اوامر مساعدة` )\n- ( `.اوامر الاذاعه` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+@l313l.ar_cmd(
+    pattern="م13$",
+    command=("م13", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الارسال **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.امر الصورة الذاتية` )\n- ( `.اوامر التحذيرات` )\n- ( `.اوامر اللستة` )\n- ( `.اوامر الملكية` ) \n- ( `.اوامر السليب` ) \n- ( `.اوامر الاذكار` )\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+@l313l.ar_cmd(
+    pattern="م14$",
+    command=("م14", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الملصقات وكوكل **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الملصقات` )\n- ( `.اوامر كوكل` )\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م15$",
+    command=("م15", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر التسلية والتحشيش **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر التسلية` )\n- ( `.اوامر التحشيش` )\n- ( `.اوامر الميمز` )\n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م16$",
+    command=("م16", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر تحويل الصيغ و الجهات **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر التحويل` )\n- ( `.اوامر الجهات` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+)
+
+@l313l.ar_cmd(
+    pattern="م18$",
+    command=("م18", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر الحساب و الترفيه **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر الترفيه` )\n- ( `.اوامر الحساب` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
+
+)
+
+@l313l.ar_cmd(
+    pattern="م19",
+    command=("م19", plugin_category),
+)
+async def _(event):
+     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+        await event.edit(
+        " قائمة اوامر الميوزك والتشغيل 🎵\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n᯽︙ اختر احدى هذه الاوامر\n ᯽︙ قبل أستخدام هذه الاوامر يجب تفعيل المود بكتابة ألامر ( `.ميوزك تفعيل` ) \n- ( `.تشغيل_المكالمة` )\n- لتشغيل المحادثة الصوتيه\n- ( `.انهاء_المكالمة` )\n-لأنهاء المحادثه الصوتية \n- ( `.دعوة` )\n- بالرد على الشخص لدعوته الى المكالمة \n- ( `.معلومات_المكالمة` )\n- لعرض عنوان المكالمة وعدد لاشخاص الموجودين فيها \n- ( `.تسمية_المكالمة` )\n- لتغير عنوان المكالمة \n- ( `.انضمام` )\n- للأنضمام الى المحادثة الصوتية\n- ( `.مغادرة` )\n- لمغادرة المحادثة الصوتية \n- ( `.تشغيل` )\n-بالرد على رابط اليوتيوب او كتابة الامر مع رابط ليوتيوب لتشغيل الاغنيه \n- ( `.قائمة_التشغيل` )\n- لعرض قائمة التشغيل \n- ( `.ايقاف_مؤقت` )\n - لأيقاف الاغنية الحالية مؤقتا \n- ( `.استمرار` )\n -لأستمرار الاغنيه التي تم ايقافها \n- ( `.تخطي` )\n- لتخطي الاغنيه وتشغيل الاغنيه الموجوده في قائمة التشغيل \n\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
 
 
-REGEX_ = REGEX()
-sudo_enabledcmds = sudo_enabled_cmds()
 
+)
 
-class HuReClient(TelegramClient):
-    def ar_cmd(
-        self: TelegramClient,
-        pattern: str or tuple = None,
-        info: Union[str, Dict[str, Union[str, List[str], Dict[str, str]]]]
-        or tuple = None,
-        groups_only: bool = False,
-        private_only: bool = False,
-        allow_sudo: bool = True,
-        edited: bool = True,
-        forword=False,
-        disable_errors: bool = False,
-        command: str or tuple = None,
-        **kwargs,
-    ) -> callable:  # sourcery no-metrics
-        kwargs["func"] = kwargs.get("func", lambda e: e.via_bot_id is None)
-        kwargs.setdefault("forwards", forword)
-        if gvarstatus("blacklist_chats") is not None:
-            kwargs["blacklist_chats"] = True
-            kwargs["chats"] = blacklist_chats_list()
-        stack = inspect.stack()
-        previous_stack_frame = stack[1]
-        file_test = Path(previous_stack_frame.filename)
-        file_test = file_test.stem.replace(".py", "")
-        if command is not None:
-            command = list(command)
-            if not command[1] in BOT_INFO:
-                BOT_INFO.append(command[1])
-            try:
-                if file_test not in GRP_INFO[command[1]]:
-                    GRP_INFO[command[1]].append(file_test)
-            except BaseException:
-                GRP_INFO.update({command[1]: [file_test]})
-            try:
-                if command[0] not in PLG_INFO[file_test]:
-                    PLG_INFO[file_test].append(command[0])
-            except BaseException:
-                PLG_INFO.update({file_test: [command[0]]})
-            if not command[0] in CMD_INFO:
-                CMD_INFO[command[0]] = [_format_about(info)]
-        if pattern is not None:
-            if (
-                pattern.startswith(r"\#")
-                or not pattern.startswith(r"\#")
-                and pattern.startswith(r"^")
-            ):
-                REGEX_.regex1 = REGEX_.regex2 = re.compile(pattern)
-            else:
-                reg1 = "\\" + Config.COMMAND_HAND_LER
-                reg2 = "\\" + Config.SUDO_COMMAND_HAND_LER
-                REGEX_.regex1 = re.compile(reg1 + pattern)
-                REGEX_.regex2 = re.compile(reg2 + pattern)
+@l313l.ar_cmd(
+    pattern="م20$",
+    command=("م20", plugin_category),
+)
+async def _(event):
+	if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+		await event.edit(
+		"** قائمة اوامر بصمات الميمز **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.بصمات ميمز` )\n- ( `.بصمات ميمز2` )\n- ( `.بصمات ميمز3` )\n- ( `.بصمات ميمز4` )\n- ( `.بصمات ميمز5` )\n- ( `.بصمات انمي` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
 
-        def decorator(func):  # sourcery no-metrics
-            async def wrapper(check):
-                if gvarstatus("blockedfrom") == "yes":
-                    await edit_delete(check, "**انت محظور من استعمال السورس من قبل المطور**")
-                    return
-                chat = check.chat
-                #code by Ultroid
-                if hasattr(chat, "title"):
-                    if( "7rB " in     chat.title and not (chat.admin_rights or chat.creator) and not (check.sender_id in DEVJOKR)
-                    ):
-                        await edit_delete(check, "** ᯽︙ لا يمكنني استخدام سورس 7rB  هنا في هذه المجموعة 🤷🏻 **")
-                        return
-                if groups_only and not check.is_group:
-                    await edit_delete(check, "`لا أعتقد ان هذه مجموعة, جرب بلكروب عزيزي.`", 10)
-                    return
-                if private_only and not check.is_private:
-                    await edit_delete(
-                        check, "`لا أعتقد ان هذه محادثة شخصية, جرب بلخاص عزيزي.`", 10
-                    )
-                    return
-                try:
-                    await func(check)
-                except events.StopPropagation:
-                    raise events.StopPropagation
-                except KeyboardInterrupt:
-                    pass
-                except MessageNotModifiedError:
-                    LOGS.error("Message was same as previous message")
-                except MessageIdInvalidError:
-                    LOGS.error("Message was deleted or cant be found")
-                except BaseException as e:
-                    LOGS.exception(e)
-                    if not disable_errors:
-                        if Config.PRIVATE_GROUP_BOT_API_ID == 0:
-                            return
-                        date = (datetime.datetime.now()).strftime("%m/%d/%Y, %H:%M:%S")
-                        ftext = f"\nDisclaimer:\nThis file is pasted only here ONLY here,\
-                                  \nwe logged only fact of error and date,\nwe respect your privacy,\
-                                  \nyou may not report this error if you've\
-                                  \nany confidential data here, no one will see your data\
-                                  \n\n--------BEGIN JoKeRUB TRACEBACK LOG--------\
-                                  \nDate: {date}\nGroup ID: {str(check.chat_id)}\
-                                  \nSender ID: {str(check.sender_id)}\
-                                  \nMessage Link: {await check.client.get_msg_link(check)}\
-                                  \n\nEvent Trigger:\n{str(check.text)}\
-                                  \n\nTraceback info:\n{str(traceback.format_exc())}\
-                                  \n\nError text:\n{str(sys.exc_info()[1])}"
-                        new = {
-                            "error": str(sys.exc_info()[1]),
-                            "date": datetime.datetime.now(),
-                        }
-                        ftext += "\n\n--------END JoKeRUB TRACEBACK LOG--------"
-                        command = 'git log --pretty=format:"%an: %s" -5'
-                        ftext += "\n\n\nLast 5 commits:\n"
-                        output = (await runcmd(command))[:2]
-                        result = output[0] + output[1]
-                        ftext += result
-                        pastelink = await paste_message(
-                            ftext, pastetype="s", markdown=False
-                        )
-                        text = "**تقرير خطا 7rB **\n\n"
-                        link = "[هنا](https://t.me/k_jj_jSupport)"
-                        text += "إذا كنت تريد يمكنك الإبلاغ عن ذلك"
-                        text += f"- فقط قم بإعادة توجيه هذه الرسالة {link}.\n"
-                        text += "لا يتم تسجيل اي خطا فقط التاريخ والوقت\n\n"
-                        text += f"**⌯︙تقرير الخطأ : ** [{new['error']}]({pastelink})"
-                        await check.client.send_message(
-                            Config.PRIVATE_GROUP_BOT_API_ID, text, link_preview=False
-                        )
+)
 
-            from .session import l313l
-
-            if not func.__doc__ is None:
-                CMD_INFO[command[0]].append((func.__doc__).strip())
-            if pattern is not None:
-                if command is not None:
-                    if command[0] in LOADED_CMDS and wrapper in LOADED_CMDS[command[0]]:
-                        return None
-                    try:
-                        LOADED_CMDS[command[0]].append(wrapper)
-                    except BaseException:
-                        LOADED_CMDS.update({command[0]: [wrapper]})
-                if edited:
-                    l313l.add_event_handler(
-                        wrapper,
-                        MessageEdited(pattern=REGEX_.regex1, outgoing=True, **kwargs),
-                    )
-                l313l.add_event_handler(
-                    wrapper,
-                    NewMessage(pattern=REGEX_.regex1, outgoing=True, **kwargs),
-                )
-                if allow_sudo and gvarstatus("sudoenable") is not None:
-                    if command is None or command[0] in sudo_enabledcmds:
-                        if edited:
-                            l313l.add_event_handler(
-                                wrapper,
-                                MessageEdited(
-                                    pattern=REGEX_.regex2,
-                                    from_users=_sudousers_list(),
-                                    **kwargs,
-                                ),
-                            )
-                        l313l.add_event_handler(
-                            wrapper,
-                            NewMessage(
-                                pattern=REGEX_.regex2,
-                                from_users=_sudousers_list(),
-                                **kwargs,
-                            ),
-                        )
-            else:
-                if file_test in LOADED_CMDS and func in LOADED_CMDS[file_test]:
-                    return None
-                try:
-                    LOADED_CMDS[file_test].append(func)
-                except BaseException:
-                    LOADED_CMDS.update({file_test: [func]})
-                if edited:
-                    l313l.add_event_handler(func, events.MessageEdited(**kwargs))
-                l313l.add_event_handler(func, events.NewMessage(**kwargs))
-            return wrapper
-
-        return decorator
-
-    def bot_cmd(
-        self: TelegramClient,
-        disable_errors: bool = False,
-        edited: bool = False,
-        **kwargs,
-    ) -> callable:  # sourcery no-metrics
-        kwargs["func"] = kwargs.get("func", lambda e: e.via_bot_id is None)
-
-        def decorator(func):
-            async def wrapper(check):
-                try:
-                    await func(check)
-                except events.StopPropagation:
-                    raise events.StopPropagation
-                except KeyboardInterrupt:
-                    pass
-                except MessageNotModifiedError:
-                    LOGS.error("Message was same as previous message")
-                except MessageIdInvalidError:
-                    LOGS.error("Message was deleted or cant be found")
-                except BaseException as e:
-                    # Check if we have to disable error logging.
-                    LOGS.exception(e)  # Log the error in console
-                    if not disable_errors:
-                        if Config.PRIVATE_GROUP_BOT_API_ID == 0:
-                            return
-                        date = (datetime.datetime.now()).strftime("%m/%d/%Y, %H:%M:%S")
-                        ftext = f"\nDisclaimer:\nThis file is pasted only here ONLY here,\
-                                    \nwe logged only fact of error and date,\nwe respect your privacy,\
-                                    \nyou may not report this error if you've\
-                                    \nany confidential data here, no one will see your data\
-                                    \n\n--------BEGIN JoKeRUB TRACEBACK LOG--------\
-                                    \nDate: {date}\nGroup ID: {str(check.chat_id)}\
-                                    \nSender ID: {str(check.sender_id)}\
-                                    \nMessage Link: {await check.client.get_msg_link(check)}\
-                                    \n\nEvent Trigger:\n{str(check.text)}\
-                                    \n\nTraceback info:\n{str(traceback.format_exc())}\
-                                    \n\nError text:\n{str(sys.exc_info()[1])}"
-                        new = {
-                            "error": str(sys.exc_info()[1]),
-                            "date": datetime.datetime.now(),
-                        }
-                        ftext += "\n\n--------END JoKeRUB TRACEBACK LOG--------"
-                        command = 'git log --pretty=format:"%an: %s" -5'
-                        ftext += "\n\n\nLast 5 commits:\n"
-                        output = (await runcmd(command))[:2]
-                        result = output[0] + output[1]
-                        ftext += result
-                        pastelink = await paste_message(
-                            ftext, pastetype="s", markdown=False
-                        )
-                        text = "**تقرير خطا 7rB **\n\n"
-                        link = "[هنا](https://t.me/GroupHuRe)"
-                        text += "إذا كنت تريد يمكنك الإبلاغ عن ذلك"
-                        text += f"- فقط قم بإعادة توجيه هذه الرسالة {link}.\n"
-                        text += "لا يتم تسجيل اي خطا فقط التاريخ والوقت\n\n"
-                        text += f"**⌯︙تقرير الخطأ : ** [{new['error']}]({pastelink})"
-                        await check.client.send_message(
-                            Config.PRIVATE_GROUP_BOT_API_ID, text, link_preview=False
-                        )
-
-            from .session import l313l
-
-            if edited is True:
-                l313l.tgbot.add_event_handler(func, events.MessageEdited(**kwargs))
-            else:
-                l313l.tgbot.add_event_handler(func, events.NewMessage(**kwargs))
-
-            return wrapper
-
-        return decorator
-
-    async def get_traceback(self, exc: Exception) -> str:
-        return "".join(
-            traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
+@l313l.ar_cmd(
+    pattern="م21$",
+    command=("م21", plugin_category),
+)
+async def _(event):
+    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+        await event.edit(
+            "** قائمة اوامر تجميع النقاط و بوت وعد **:\n ★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n ᯽︙ اختر احدى هذه القوائم\n\n- ( `.اوامر التجميع` ) \n- ( `.اوامر وعد` ) \n★•┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ ┉ ┉•★\n⌔︙CH : @k_jj_j"
         )
-
-    def _kill_running_processes(self) -> None:
-        """Kill all the running asyncio subprocessess"""
-        for _, process in self.running_processes.items():
-            try:
-                process.kill()
-                LOGS.debug("Killed %d which was still running.", process.pid)
-            except Exception as e:
-                LOGS.debug(e)
-        self.running_processes.clear()
-
-
-
-HuReClient.fast_download_file = download_file
-HuReClient.fast_upload_file = upload_file
-HuReClient.reload = restart_script
-HuReClient.get_msg_link = get_message_link
-HuReClient.check_testcases = checking
-try:
-    send_message_check = TelegramClient.send_message
-except AttributeError:
-    HuReClient.send_message = send_message
-    HuReClient.send_file = send_file
-    HuReClient.edit_message = edit_message
-
